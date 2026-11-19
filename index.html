@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Séquence Cycle 2 — Le Mur des Alliés (Harcèlement scolaire)</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --primary-dark: #1d4ed8;
+      --accent: #0d9488;
+      --accent-light: #f0fdfa;
+      --warm: #d97706;
+      --warm-light: #fffbeb;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding-bottom: 48px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #0d9488 100%);
+      color: #fff;
+      padding: 28px 20px 22px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
+    }
+
+    header .badge-top {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    header h1 {
+      font-size: clamp(1.45rem, 3vw, 2.15rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    header p {
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 0.98rem;
+      opacity: 0.92;
+    }
+
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 8px 15px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .nav-btn.download-btn {
+      background: #0d9488;
+      color: #fff;
+      border-color: #0d9488;
+    }
+
+    .nav-btn.download-btn:hover {
+      background: #0f766e;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 26px auto 0;
+      padding: 0 18px;
+    }
+
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 14px;
+      color: #0f172a;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      color: #1e293b;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .pill-blue { background: var(--primary-light); color: var(--primary-dark); }
+    .pill-teal { background: var(--accent-light); color: var(--accent); }
+    .pill-warm { background: var(--warm-light); color: var(--warm); }
+    .pill-purple { background: var(--purple-light); color: var(--purple); }
+
+    ul.clean-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    ul.clean-list li {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    ul.clean-list li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    .meta-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .meta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .meta-box .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .meta-box .value {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .role-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .role-title {
+      font-weight: 800;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+      color: var(--primary-dark);
+    }
+
+    .session-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .session-preview:hover { border-color: var(--primary); }
+
+    .btn-link {
+      align-self: flex-start;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+      background: var(--surface-alt);
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .filter-bar span {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 6px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    .phase-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .phase-table th {
+      background: #f1f5f9;
+      text-align: left;
+      padding: 12px 14px;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      color: #334155;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .phase-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 0.94rem;
+    }
+
+    .col-time { width: 22%; font-weight: 700; color: var(--primary-dark); }
+    .col-eleves { width: 41%; }
+    .col-ens { width: 37%; background: #fafcff; }
+
+    body.mode-eleves .col-ens { display: none; }
+    body.mode-eleves .col-eleves { width: 78%; }
+    body.mode-ens .col-eleves { display: none; }
+    body.mode-ens .col-ens { width: 78%; }
+
+    .diff-box {
+      background: var(--warm-light);
+      border-left: 4px solid var(--warm);
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 0.93rem;
+    }
+
+    .prod-box {
+      background: var(--accent-light);
+      border: 1px solid #99f6e4;
+      border-left: 5px solid var(--accent);
+      padding: 18px;
+      border-radius: 10px;
+      margin-top: 18px;
+    }
+
+    .wall-mockup {
+      background: #fefce8;
+      border: 3px dashed #ca8a04;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .wall-zone {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .wall-zone:hover, .wall-zone.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .wall-middle {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 720px) {
+      .wall-middle { grid-template-columns: 1fr; }
+      .phase-table, .phase-table tbody, .phase-table tr, .phase-table td { display: block; width: 100% !important; }
+      .phase-table thead { display: none; }
+      .phase-table tr { margin-bottom: 14px; border: 1px solid var(--border); border-radius: 10px; }
+    }
+
+    .session-footer-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 22px;
+      gap: 12px;
+    }
+
+    .nav-step-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .nav-step-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge-top">Séquence Pédagogique • Cycle 2 (CP / CE1 / CE2)</div>
+    <h1>Le Mur des Alliés : Agir contre la mise à l'écart et les moqueries</h1>
+    <p>Prévention du harcèlement scolaire et des préjugés liés à l'apparence physique (le surpoids) à travers 4 séances coopératives et une création collective.</p>
+  </header>
+
+  <nav class="nav-bar" aria-label="Navigation de la séquence">
+    <div class="nav-inner">
+      <button class="nav-btn active" onclick="switchView('overview', this)">📋 Vue d'ensemble</button>
+      <button class="nav-btn" onclick="switchView('s1', this)">1️⃣ Séance 1 : Émotions</button>
+      <button class="nav-btn" onclick="switchView('s2', this)">2️⃣ Séance 2 : Préjugés</button>
+      <button class="nav-btn" onclick="switchView('s3', this)">3️⃣ Séance 3 : Alliés</button>
+      <button class="nav-btn" onclick="switchView('s4', this)">4️⃣ Séance 4 : Mur final</button>
+      <button class="nav-btn" onclick="switchView('wall', this)">🎨 Le Mur des Alliés</button>
+      <button class="nav-btn download-btn" onclick="telechargerSequence()">⬇️ Télécharger la fiche complète (.doc)</button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ==================== VUE D'ENSEMBLE ==================== -->
+    <section id="view-overview" class="view-section active">
+      <div class="meta-strip">
+        <div class="meta-box">
+          <div class="label">Niveau scolaire</div>
+          <div class="value">Cycle 2 (idéalement CE1 / CE2)</div>
+        </div>
+        <div class="meta-box" style="border-left-color: var(--accent);">
+          <div class="label">Discipline principale</div>
+          <div class="value">Enseignement Moral et Civique (EMC)</div>
+        </div>
+        <div class="meta-box" style="border-left-color: var(--purple);">
+          <div class="label">Domaines transversaux</div>
+          <div class="value">Français (Oral, Lecture, Écrit) & Arts plastiques</div>
+        </div>
+        <div class="meta-box" style="border-left-color: var(--warm);">
+          <div class="label">Volume horaire</div>
+          <div class="value">4 séances × 45 minutes (3h00)</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>🎯 Objectifs pédagogiques de la séquence</h2>
+          <ul class="clean-list">
+            <li>Identifier et nommer les émotions ressenties par une victime d'exclusion ou de moqueries.</li>
+            <li>Comprendre que la différence physique (notamment le surpoids) ne justifie jamais le rejet ou la moquerie.</li>
+            <li>Distinguer le conflit ponctuel (dispute) du harcèlement (répétition, isolement, déséquilibre).</li>
+            <li>Identifier le rôle des témoins et connaître les solutions concrètes pour aider un camarade mis à l'écart (alerter un adulte, inclure, soutenir).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>📚 Compétences des programmes (Cycle 2)</h2>
+          <ul class="clean-list">
+            <li><strong>Respecter autrui :</strong> Accepter les différences ; respecter les autres et les règles de la vie collective ; adopter un comportement responsable.</li>
+            <li><strong>Partager des valeurs :</strong> Comprendre le sens des symboles et des règles de solidarité et d'entraide.</li>
+            <li><strong>Langage oral :</strong> Participer à des échanges dans des situations diverses (débat réglé) en respectant les règles de communication (écouter, ne pas couper la parole).</li>
+            <li><strong>Production d'écrit :</strong> Rédiger un court texte porteur de sens (une phrase d'encouragement ou un conseil d'action) de manière autonome ou guidée.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🤝 Organisation pédagogique & Coopération en îlots</h2>
+        <p style="margin-bottom: 14px;">La classe est organisée en <strong>îlots hétérogènes de 4 élèves</strong> dès la séance 1. À chaque séance, les badges de rôles tournent afin que chaque élève expérimente les 4 responsabilités sur l'ensemble de la séquence :</p>
+        <div class="grid-4" style="margin-bottom: 0;">
+          <div class="role-card">
+            <div class="role-title">🗣️ Le Maître de la parole</div>
+            <p style="font-size: 0.9rem;">Distribue la parole équitablement afin que chacun puisse donner son avis et organise les tours de rôle.</p>
+          </div>
+          <div class="role-card">
+            <div class="role-title">⏳ Le Gardien du temps et du calme</div>
+            <p style="font-size: 0.9rem;">Veille à ce que le groupe chuchote (« voix de souris ») et termine le travail dans le temps imparti.</p>
+          </div>
+          <div class="role-card">
+            <div class="role-title">✍️ Le Secrétaire / Scribe</div>
+            <p style="font-size: 0.9rem;">Note les idées du groupe, colle les étiquettes validées ou rédige la production écrite commune.</p>
+          </div>
+          <div class="role-card">
+            <div class="role-title">📣 Le Porte-parole / Messager</div>
+            <p style="font-size: 0.9rem;">Va chercher le matériel auprès de l'enseignant et présente le travail du groupe à toute la classe.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin: 24px 0 14px; font-size: 1.3rem;">🗓️ Progression des 4 séances vers la production finale</h2>
+      <div class="grid-4">
+        <div class="session-preview" onclick="switchView('s1', document.querySelectorAll('.nav-btn')[1])">
+          <div>
+            <span class="pill pill-blue">Séance 1 • 45 min</span>
+            <h3 style="margin-top: 8px;">Comprendre l'exclusion et les émotions</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Découverte de l'histoire de Léo (élève un peu rond mis à l'écart), tri d'émotions et écriture des bulles de pensée.</p>
+          </div>
+          <button class="btn-link">Ouvrir la fiche S1 →</button>
+        </div>
+
+        <div class="session-preview" onclick="switchView('s2', document.querySelectorAll('.nav-btn')[2])">
+          <div>
+            <span class="pill pill-purple">Séance 2 • 45 min</span>
+            <h3 style="margin-top: 8px;">Déconstruire les préjugés sur le physique</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Lecture offerte, débat réglé et création des panneaux « Les qualités invisibles d'un bon ami ».</p>
+          </div>
+          <button class="btn-link">Ouvrir la fiche S2 →</button>
+        </div>
+
+        <div class="session-preview" onclick="switchView('s3', document.querySelectorAll('.nav-btn')[3])">
+          <div>
+            <span class="pill pill-warm">Séance 3 • 45 min</span>
+            <h3 style="margin-top: 8px;">Passer de spectateur à allié</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Analyse du rôle des témoins, jeux de rôle d'intervention et rédaction des « Boucliers de bienveillance ».</p>
+          </div>
+          <button class="btn-link">Ouvrir la fiche S3 →</button>
+        </div>
+
+        <div class="session-preview" onclick="switchView('s4', document.querySelectorAll('.nav-btn')[4])">
+          <div>
+            <span class="pill pill-teal">Séance 4 • 45 min</span>
+            <h3 style="margin-top: 8px;">Assemblage et inauguration du Mur</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Illustration de la 4e planche heureuse, montage collectif dans le couloir et charte signée par la classe.</p>
+          </div>
+          <button class="btn-link">Ouvrir la fiche S4 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SÉANCE 1 ==================== -->
+    <section id="view-s1" class="view-section">
+      <div class="card">
+        <span class="pill pill-blue">Séance 1 sur 4 • Durée : 45 minutes</span>
+        <h2 style="margin-top: 8px; font-size: 1.5rem;">Comprendre l'exclusion et les émotions</h2>
+        <p style="color: var(--text-muted); margin-bottom: 16px;"><strong>Matériel :</strong> 3 illustrations grand format (A3) sans texte affichées au tableau : <em>Image 1</em> (Léo, un élève un peu rond, assis seul sur un banc pendant que d'autres jouent au ballon) ; <em>Image 2</em> (un petit groupe rit en montrant Léo du doigt) ; <em>Image 3</em> (Léo rentre chez lui la tête basse). Par îlot : les 3 illustrations A4, une enveloppe de 8 étiquettes-émotions illustrées (tristesse, colère, honte, solitude, peur, joie, fierté, indifférence) et 3 grandes bulles de pensée vierges cartonnées.</p>
+
+        <div class="grid-2">
+          <div>
+            <h3>🎯 Objectifs pédagogiques</h3>
+            <ul class="clean-list">
+              <li>Identifier une situation de mise à l'écart et de moquerie liée à l'apparence physique.</li>
+              <li>Nommer et différencier les émotions ressenties par la victime (tristesse, honte, solitude) et par les auteurs/témoins (moquerie, indifférence).</li>
+              <li>Développer l'empathie en se mettant à la place d'un camarade rejeté.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>📚 Compétences visées</h3>
+            <ul class="clean-list">
+              <li><strong>EMC — Respecter autrui :</strong> Identifier et partager des émotions et sentiments dans des situations diversifiées.</li>
+              <li><strong>EMC — La sensibilité :</strong> S'estimer et être capable d'écoute et d'empathie.</li>
+              <li><strong>Français — Oral & Écrit :</strong> Argumenter son choix en respectant les règles de communication ; produire une phrase simple à la 1re personne (« Je... »).</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 12px;">🤝 Rôles coopératifs (Attribution initiale — Tour 1)</h3>
+        <div class="grid-4">
+          <div class="role-card"><div class="role-title">🗣️ Maître de la parole</div><p style="font-size:0.86rem;">Donne la parole à chacun à tour de rôle pour que personne ne monopolise la discussion.</p></div>
+          <div class="role-card"><div class="role-title">⏳ Gardien temps & calme</div><p style="font-size:0.86rem;">Veille à la « voix de souris » et surveille le sablier/chronomètre.</p></div>
+          <div class="role-card"><div class="role-title">✍️ Secrétaire / Scribe</div><p style="font-size:0.86rem;">Écrit les mots validés par le groupe dans les bulles de pensée.</p></div>
+          <div class="role-card"><div class="role-title">📣 Porte-parole / Messager</div><p style="font-size:0.86rem;">Récupère l'enveloppe de matériel et présente les bulles de son groupe au tableau.</p></div>
+        </div>
+
+        <div class="filter-bar">
+          <span>Affichage du tableau :</span>
+          <button class="filter-btn active" onclick="setFocusMode('all', this)">Vue complète</button>
+          <button class="filter-btn" onclick="setFocusMode('eleves', this)">Focus Activités élèves</button>
+          <button class="filter-btn" onclick="setFocusMode('ens', this)">Focus Rôle enseignant</button>
+        </div>
+
+        <table class="phase-table">
+          <thead>
+            <tr>
+              <th class="col-time">Étape & Durée</th>
+              <th class="col-eleves">Activités réalisées par les élèves</th>
+              <th class="col-ens">Rôle et posture de l'enseignant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-time">Phase 1 : Découverte collective<br><small>(10 min — Regroupement / tableau)</small></td>
+              <td class="col-eleves">
+                • Observent en silence les 3 grandes illustrations affichées au tableau.<br>
+                • Décrivent objectivement ce qu'ils voient (personnages, lieux, attitudes corporelles).<br>
+                • Émettent des hypothèses : <em>« Le garçon est tout seul »</em>, <em>« Les autres se moquent parce qu'il est gros »</em>.
+              </td>
+              <td class="col-ens">
+                • Affiche les images sans donner de titre.<br>
+                • Pose des questions ouvertes : <em>« Que se passe-t-il sur chaque image ? Comment savez-vous que Léo n'est pas content ? »</em><br>
+                • Régule la parole et interdit immédiatement toute moquerie ou comparaison avec un élève de la classe.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 2 : Recherche coopérative<br><small>(20 min — En îlots de 4)</small></td>
+              <td class="col-eleves">
+                • <strong>Étape A (8 min) :</strong> Le Messager récupère l'enveloppe. Chaque élève pioche une étiquette-émotion, la lit et explique sur quelle image et sur quel personnage la poser (ex. : <em>« Je mets la honte sur Léo à l'image 2 »</em>).<br>
+                • <strong>Étape B (12 min) :</strong> Le groupe choisit ce que Léo pense sur les images 1 et 2. Après vote, le Scribe écrit une phrase courte dans deux bulles vierges (ex. : <em>« Personne ne veut jouer avec moi... »</em>).
+              </td>
+              <td class="col-ens">
+                • Rappelle le rôle de chacun avant de lancer le chronomètre.<br>
+                • Circule entre les îlots pour étayer : aide à la lecture des étiquettes, relance les groupes bloqués (<em>« Et que ressentent ceux qui rient ? »</em>).<br>
+                • Vérifie l'orthographe des brouillons avant la recopie au propre sur les bulles cartonnées.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 3 : Mise en commun & synthèse<br><small>(15 min — Classe entière)</small></td>
+              <td class="col-eleves">
+                • Les Porte-paroles affichent leurs bulles sous les images au tableau et les lisent à voix haute.<br>
+                • Comparent les propositions et remarquent qu'elles expriment toutes la souffrance et l'isolement.<br>
+                • Votent pour retenir les <strong>3 bulles les plus parlantes</strong> pour l'histoire de Léo.
+              </td>
+              <td class="col-ens">
+                • Anime la synthèse et valide les ressentis identifiés.<br>
+                • Écrit au tableau les mots-clés : <strong>émotions, moquerie, exclusion (mise à l'écart)</strong>.<br>
+                • Fait émerger la conclusion morale : <em>« Se moquer du physique de quelqu'un et le laisser seul fait très mal à l'intérieur. »</em>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="diff-box">
+          <strong>🧩 Différenciation pédagogique :</strong> Pour les élèves en difficulté d'écriture (CP ou début CE1), les étiquettes-émotions comportent un pictogramme expressif et le Scribe dispose d'une banque de mots affichée au tableau ou peut recourir à la dictée à l'adulte.
+        </div>
+
+        <div class="prod-box">
+          <strong>🧱 Contribution à la production finale (« Le Mur des Alliés ») — Étape 1/4 :</strong><br>
+          Création des <strong>3 premières planches illustrées grand format</strong> de la bande dessinée « L'histoire de Léo », complétées par les bulles de pensée rédigées et validées par les élèves ainsi que les étiquettes-émotions collées autour des scènes (le constat).
+        </div>
+      </div>
+
+      <div class="session-footer-nav">
+        <button class="nav-step-btn" onclick="switchView('overview', document.querySelectorAll('.nav-btn')[0])">← Vue d'ensemble</button>
+        <button class="nav-step-btn" onclick="switchView('s2', document.querySelectorAll('.nav-btn')[2])">Séance 2 : Déconstruire les préjugés →</button>
+      </div>
+    </section>
+
+    <!-- ==================== SÉANCE 2 ==================== -->
+    <section id="view-s2" class="view-section">
+      <div class="card">
+        <span class="pill pill-purple">Séance 2 sur 4 • Durée : 45 minutes</span>
+        <h2 style="margin-top: 8px; font-size: 1.5rem;">Déconstruire les préjugés sur le physique</h2>
+        <p style="color: var(--text-muted); margin-bottom: 16px;"><strong>Matériel :</strong> Album jeunesse support sur les moqueries liées au physique/surpoids (ex. <em>Gros-Cornichon</em> d'Édouard Manceau) ; un bâton de parole ; par îlot : une feuille A3 à 2 colonnes (<em>« Ce qui fait un super ami »</em> / <em>« Ce qui ne compte pas pour être ami »</em>), feutres, enveloppe de 12 cartes-indices (<em>être drôle, partager son goûter, être grand, peser lourd, consoler quand on pleure, courir très vite, avoir des lunettes, écouter les autres, porter de belles baskets, être fair-play, avoir les cheveux frisés, aider à se relever</em>) + 2 cartes vierges.</p>
+
+        <div class="grid-2">
+          <div>
+            <h3>🎯 Objectifs pédagogiques</h3>
+            <ul class="clean-list">
+              <li>Comprendre que l'apparence physique (poids, taille, tenue) ne détermine ni la valeur d'une personne ni ses qualités d'ami.</li>
+              <li>Déconstruire les stéréotypes liés au surpoids (ex. : penser qu'un enfant un peu rond ne sait pas jouer ou est moins capable).</li>
+              <li>Distinguer les qualités humaines (morales et relationnelles) des caractéristiques physiques.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>📚 Compétences visées</h3>
+            <ul class="clean-list">
+              <li><strong>EMC — Respecter autrui :</strong> Accepter les différences ; comprendre que la diversité physique est une richesse.</li>
+              <li><strong>EMC — Le jugement :</strong> Prendre part à un débat réglé en exprimant un point de vue argumenté.</li>
+              <li><strong>Français — Oral & Lexique :</strong> Dégager le message implicite d'un récit lu ; catégoriser des expressions selon leur sens.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 12px;">🔄 Rôles coopératifs (Rotation — Tour 2)</h3>
+        <div class="grid-4">
+          <div class="role-card"><div class="role-title">🗣️ Maître de la parole</div><p style="font-size:0.86rem;">Distribue les cartes-indices une par une et veille à ce que chacun justifie son choix avant de coller.</p></div>
+          <div class="role-card"><div class="role-title">⏳ Gardien temps & calme</div><p style="font-size:0.86rem;">Surveille le sablier et rappelle la consigne de chuchotement lors du tri.</p></div>
+          <div class="role-card"><div class="role-title">✍️ Secrétaire / Scribe</div><p style="font-size:0.86rem;">Colle les étiquettes dans les bonnes colonnes et rédige les 2 cartes vierges inventées.</p></div>
+          <div class="role-card"><div class="role-title">📣 Porte-parole / Messager</div><p style="font-size:0.86rem;">Récupère le matériel, affiche la production de l'îlot au tableau et explique les choix du groupe.</p></div>
+        </div>
+
+        <div class="filter-bar">
+          <span>Affichage du tableau :</span>
+          <button class="filter-btn active" onclick="setFocusMode('all', this)">Vue complète</button>
+          <button class="filter-btn" onclick="setFocusMode('eleves', this)">Focus Activités élèves</button>
+          <button class="filter-btn" onclick="setFocusMode('ens', this)">Focus Rôle enseignant</button>
+        </div>
+
+        <table class="phase-table">
+          <thead>
+            <tr>
+              <th class="col-time">Étape & Durée</th>
+              <th class="col-eleves">Activités réalisées par les élèves</th>
+              <th class="col-ens">Rôle et posture de l'enseignant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-time">Phase 1 : Lecture offerte & débat réglé<br><small>(20 min — Cercle / regroupement)</small></td>
+              <td class="col-eleves">
+                • Écoutent activement la lecture de l'histoire.<br>
+                • Participent au débat avec le bâton de parole en commençant par <em>« Je pense que... »</em> ou <em>« Moi, j'aime quand un ami... »</em>.<br>
+                • Confrontent leurs idées : <em>« Même si on est un peu gros, on peut être super fort au ballon ou très gentil »</em>.
+              </td>
+              <td class="col-ens">
+                • Rappelle le lien avec Léo (Séance 1) et pose le cadre : <strong>interdiction de nommer un élève de la classe</strong>.<br>
+                • Lit l'album de manière expressive.<br>
+                • Questionne : <em>« Pourquoi juge-t-on les autres sur leur corps ? Est-ce que notre poids ou notre taille dit si on est un bon ami ? »</em><br>
+                • Fait émerger la distinction <em>apparence / qualités humaines</em>.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 2 : Atelier « Les qualités invisibles »<br><small>(15 min — En îlots de 4)</small></td>
+              <td class="col-eleves">
+                • <strong>Étape A (10 min) :</strong> Le Maître de la parole pioche une carte à la fois. Les élèves discutent pour trier : vraie qualité d'ami vs critère physique qui ne compte pas. Le Scribe colle.<br>
+                • <strong>Étape B (5 min) :</strong> Le groupe invente 2 nouvelles qualités d'un « super camarade » (ex. : <em>encourager, ne pas se moquer</em>), le Scribe les écrit et le groupe décore l'affiche.
+              </td>
+              <td class="col-ens">
+                • Effectue la rotation des badges de rôles et explique la consigne du tri.<br>
+                • Passe dans les groupes pour questionner les choix ambigus (ex. sur <em>« courir très vite »</em> : <em>« Faut-il courir vite pour être un bon ami ? »</em>).<br>
+                • Aide à l'encodage/orthographe sur les 2 cartes vierges.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 3 : Mise en commun & synthèse<br><small>(10 min — Classe entière)</small></td>
+              <td class="col-eleves">
+                • Les Porte-paroles affichent les panneaux de chaque îlot au tableau.<br>
+                • Constatent que toutes les colonnes <em>« Ce qui fait un super ami »</em> contiennent des comportements (gentillesse, entraide) et jamais des critères physiques.<br>
+                • Élaborent la règle d'or de la classe.
+              </td>
+              <td class="col-ens">
+                • Valide le tri collectif et met en évidence les qualités invisibles (celles du cœur et du comportement).<br>
+                • Écrit au tableau la trace retenue : <em>« On ne choisit pas ses amis selon leur corps, leur poids ou leur taille, mais selon leur gentillesse et leur respect. »</em>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="diff-box">
+          <strong>🧩 Différenciation pédagogique :</strong> Les cartes-indices comportent un pictogramme explicite à côté du texte pour soutenir les élèves petits lecteurs ; pour les CE2 rapides, ajout d'une consigne d'écriture d'une phrase slogan en haut de leur affiche.
+        </div>
+
+        <div class="prod-box">
+          <strong>🧱 Contribution à la production finale (« Le Mur des Alliés ») — Étape 2/4 :</strong><br>
+          Réalisation des <strong>affiches coopératives « Ce qui compte vraiment chez un ami »</strong> (les qualités invisibles face aux apparences), illustrées et mises en couleur, qui formeront le cœur central du mur (le sens).
+        </div>
+      </div>
+
+      <div class="session-footer-nav">
+        <button class="nav-step-btn" onclick="switchView('s1', document.querySelectorAll('.nav-btn')[1])">← Séance 1</button>
+        <button class="nav-step-btn" onclick="switchView('s3', document.querySelectorAll('.nav-btn')[3])">Séance 3 : Passer de spectateur à allié →</button>
+      </div>
+    </section>
+
+    <!-- ==================== SÉANCE 3 ==================== -->
+    <section id="view-s3" class="view-section">
+      <div class="card">
+        <span class="pill pill-warm">Séance 3 sur 4 • Durée : 45 minutes</span>
+        <h2 style="margin-top: 8px; font-size: 1.5rem;">Passer de spectateur à allié</h2>
+        <p style="color: var(--text-muted); margin-bottom: 16px;"><strong>Matériel :</strong> Les 3 planches de Léo complétées par une <strong>Planche 3 bis grand format</strong> (un groupe d'élèves regarde Léo se faire moquer à distance sans bouger) ; 4 cartes-missions (1 par îlot) ; par élève : un gabarit de bouclier découpé en papier cartonné épais (A5) avec lignes d'écriture ; une affiche « Boîte à mots des Alliés » au tableau (<em>venir jouer, arrêter, prévenir, défendre, ensemble, stop</em>).</p>
+
+        <div class="grid-2">
+          <div>
+            <h3>🎯 Objectifs pédagogiques</h3>
+            <ul class="clean-list">
+              <li>Identifier la place et les émotions des <strong>témoins</strong> face à une moquerie (peur, hésitation, envie d'aider sans savoir comment).</li>
+              <li>Comprendre que rester spectateur sans rien faire laisse la victime seule et encourage les moqueurs.</li>
+              <li>Expérimenter et formuler des <strong>stratégies d'action concrètes, pacifiques et efficaces</strong> pour devenir un « allié ».</li>
+            </ul>
+          </div>
+          <div>
+            <h3>📚 Compétences visées</h3>
+            <ul class="clean-list">
+              <li><strong>EMC — Culture de l'engagement :</strong> Coopérer et s'engager dans la vie de l'école ; développer solidarité et entraide face à une injustice.</li>
+              <li><strong>EMC — Respecter autrui :</strong> Mettre en œuvre des comportements responsables et non-violents.</li>
+              <li><strong>Français — Oral & Écrit :</strong> Jouer une courte saynète en adaptant ton et posture ; rédiger une phrase porteuse d'un message de soutien.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 12px;">🔄 Rôles coopératifs (Rotation — Tour 3)</h3>
+        <div class="grid-4">
+          <div class="role-card"><div class="role-title">🗣️ Maître de la parole</div><p style="font-size:0.86rem;">Organise la distribution des rôles dans la saynète (Léo, témoin allié, adulte/camarade) pour que chacun joue.</p></div>
+          <div class="role-card"><div class="role-title">⏳ Gardien temps & calme</div><p style="font-size:0.86rem;">Veille à ce que les répétitions se fassent à voix modérée dans l'espace de l'îlot et surveille le temps.</p></div>
+          <div class="role-card"><div class="role-title">✍️ Secrétaire / Scribe</div><p style="font-size:0.86rem;">Note au brouillon les phrases-clés inventées par le groupe pour aider à la rédaction des boucliers.</p></div>
+          <div class="role-card"><div class="role-title">📣 Porte-parole / Messager</div><p style="font-size:0.86rem;">Récupère la carte-mission et les gabarits de boucliers, et présente la scène jouée devant la classe.</p></div>
+        </div>
+
+        <div class="filter-bar">
+          <span>Affichage du tableau :</span>
+          <button class="filter-btn active" onclick="setFocusMode('all', this)">Vue complète</button>
+          <button class="filter-btn" onclick="setFocusMode('eleves', this)">Focus Activités élèves</button>
+          <button class="filter-btn" onclick="setFocusMode('ens', this)">Focus Rôle enseignant</button>
+        </div>
+
+        <table class="phase-table">
+          <thead>
+            <tr>
+              <th class="col-time">Étape & Durée</th>
+              <th class="col-eleves">Activités réalisées par les élèves</th>
+              <th class="col-ens">Rôle et posture de l'enseignant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-time">Phase 1 : Analyse du rôle des témoins<br><small>(10 min — Face au tableau)</small></td>
+              <td class="col-eleves">
+                • Observent la nouvelle image (Planche 3 bis) ajoutée à l'histoire.<br>
+                • Identifient les témoins/spectateurs.<br>
+                • Expliquent leur hésitation : <em>« Ils ont peur qu'on se moque d'eux aussi »</em>, <em>« Ils ne savent pas quoi dire »</em>.
+              </td>
+              <td class="col-ens">
+                • Affiche la Planche 3 bis et questionne : <em>« Que font ces enfants au fond de la cour ? Sont-ils méchants ? Pourquoi n'aident-ils pas Léo ? »</em><br>
+                • Introduit le mot <strong>« allié »</strong> (celui qui ne laisse pas son camarade seul et agit pour l'aider).
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 2 : Jeux de rôle des Alliés<br><small>(20 min — En îlots de 4)</small></td>
+              <td class="col-eleves">
+                • <strong>Étape A (10 min — Préparation) :</strong> Chaque îlot prépare une saynète selon sa carte-mission :<br>
+                &nbsp;&nbsp;– <em>Îlot 1 :</em> Inviter Léo à rejoindre un jeu.<br>
+                &nbsp;&nbsp;– <em>Îlot 2 :</em> Aller chercher un adulte et expliquer clairement.<br>
+                &nbsp;&nbsp;– <em>Îlot 3 :</em> Dire « Stop ! » calmement aux moqueurs en groupe.<br>
+                &nbsp;&nbsp;– <em>Îlot 4 :</em> Consoler Léo sur le banc après la scène.<br>
+                • <strong>Étape B (10 min — Restitution) :</strong> Chaque groupe joue sa scène de 1 min ; la classe valide les solutions sans violence.
+              </td>
+              <td class="col-ens">
+                • Effectue la rotation des badges de rôles et distribue une carte-mission par îlot.<br>
+                • Circule pour débloquer les situations (rappelle que la réponse n'est jamais la bagarre ou l'insulte).<br>
+                • Valorise chaque stratégie en insistant : <strong>aller chercher un adulte n'est pas « rapporter », c'est protéger</strong>.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 3 : Rédaction des « Boucliers »<br><small>(15 min — Individuel en îlot)</small></td>
+              <td class="col-eleves">
+                • Chaque élève reçoit un gabarit de bouclier cartonné.<br>
+                • Choisit une phrase d'action ou de soutien (ex. : <em>« Viens jouer avec nous ! »</em>, <em>« Stop aux moqueries ! »</em>, <em>« Je préviens un adulte »</em>, <em>« Tu n'es pas tout seul »</em>).<br>
+                • Écrit au crayon à papier, fait vérifier, puis repasse au feutre noir.
+              </td>
+              <td class="col-ens">
+                • Affiche la « Boîte à mots des Alliés » au tableau.<br>
+                • Corrige l'orthographe avant le repassage au feutre (dictée à l'adulte ou modèle sur ardoise pour les élèves en difficulté).<br>
+                • Ramasse les boucliers pour la mise en couleur en séance 4.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="diff-box">
+          <strong>🧩 Différenciation pédagogique :</strong> Les cartes-missions comportent une amorce de phrase pour lancer le dialogue des groupes fragiles ; un lignage adapté (type Seyès agrandi) est fourni sur le bouclier pour les élèves ayant des difficultés graphomotrices.
+        </div>
+
+        <div class="prod-box">
+          <strong>🧱 Contribution à la production finale (« Le Mur des Alliés ») — Étape 3/4 :</strong><br>
+          Rédaction d'une collection de <strong>« Boucliers de bienveillance » individuels</strong> (un par élève), portant chacun une phrase-clé validée collectivement pour agir contre l'exclusion et les moqueries (les solutions).
+        </div>
+      </div>
+
+      <div class="session-footer-nav">
+        <button class="nav-step-btn" onclick="switchView('s2', document.querySelectorAll('.nav-btn')[2])">← Séance 2</button>
+        <button class="nav-step-btn" onclick="switchView('s4', document.querySelectorAll('.nav-btn')[4])">Séance 4 : Assemblage et inauguration →</button>
+      </div>
+    </section>
+
+    <!-- ==================== SÉANCE 4 ==================== -->
+    <section id="view-s4" class="view-section">
+      <div class="card">
+        <span class="pill pill-teal">Séance 4 sur 4 • Durée : 45 minutes</span>
+        <h2 style="margin-top: 8px; font-size: 1.5rem;">Assemblage et inauguration du « Mur des Alliés »</h2>
+        <p style="color: var(--text-muted); margin-bottom: 16px;"><strong>Matériel :</strong> Toutes les productions des séances 1 à 3 ; une feuille A3 vierge épaisse pour dessiner la <strong>4e et dernière planche</strong> de l'histoire de Léo + grande bulle de dialogue vierge ; grand support mural (kraft ou panneau d'affichage dans le couloir) avec le titre <em>« LE MUR DES ALLIÉS : ENSEMBLE CONTRE LA MISE À L'ÉCART »</em> ; matériel d'arts plastiques ; « Charte d'engagement » en bas du panneau.</p>
+
+        <div class="grid-2">
+          <div>
+            <h3>🎯 Objectifs pédagogiques</h3>
+            <ul class="clean-list">
+              <li>Coopérer pour finaliser une œuvre collective porteuse de sens et esthétiquement lisible.</li>
+              <li>Imaginer et représenter visuellement la résolution positive d'une situation de harcèlement (l'inclusion de l'élève rejeté).</li>
+              <li>Formaliser un engagement personnel et collectif contre les moqueries et identifier les personnes ressources de l'école.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>📚 Compétences visées</h3>
+            <ul class="clean-list">
+              <li><strong>EMC — Culture de l'engagement :</strong> S'engager et assumer des responsabilités dans l'école ; participer à un projet citoyen.</li>
+              <li><strong>Arts plastiques :</strong> Réaliser une production plastique collective en respectant une organisation spatiale et des choix de couleurs harmonieux.</li>
+              <li><strong>Français — Langage oral :</strong> Présenter et expliquer une réalisation collective à un auditoire.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 12px;">🔄 Rôles coopératifs (Dernière rotation — Tour 4)</h3>
+        <div class="grid-4">
+          <div class="role-card"><div class="role-title">🗣️ Maître de la parole</div><p style="font-size:0.86rem;">Coordonne le partage du matériel d'arts plastiques et l'accord sur le dessin de la dernière case.</p></div>
+          <div class="role-card"><div class="role-title">⏳ Gardien temps & calme</div><p style="font-size:0.86rem;">Veille au soin apporté au coloriage, à la propreté de la table et au respect du chronomètre.</p></div>
+          <div class="role-card"><div class="role-title">✍️ Secrétaire / Scribe</div><p style="font-size:0.86rem;">Écrit la phrase finale dans la dernière bulle (<em>« Viens jouer avec nous Léo ! »</em>) et vérifie les prénoms au dos.</p></div>
+          <div class="role-card"><div class="role-title">📣 Porte-parole / Messager</div><p style="font-size:0.86rem;">Transporte les productions jusqu'au panneau mural du couloir et dirige le collage de son groupe.</p></div>
+        </div>
+
+        <div class="filter-bar">
+          <span>Affichage du tableau :</span>
+          <button class="filter-btn active" onclick="setFocusMode('all', this)">Vue complète</button>
+          <button class="filter-btn" onclick="setFocusMode('eleves', this)">Focus Activités élèves</button>
+          <button class="filter-btn" onclick="setFocusMode('ens', this)">Focus Rôle enseignant</button>
+        </div>
+
+        <table class="phase-table">
+          <thead>
+            <tr>
+              <th class="col-time">Étape & Durée</th>
+              <th class="col-eleves">Activités réalisées par les élèves</th>
+              <th class="col-ens">Rôle et posture de l'enseignant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-time">Phase 1 : Finalisation artistique<br><small>(20 min — En îlots de 4)</small></td>
+              <td class="col-eleves">
+                • <strong>Tâche individuelle (10 min) :</strong> Chaque élève décore la bordure de son <strong>Bouclier de bienveillance</strong> (Séance 3) sans colorier sur le texte.<br>
+                • <strong>Tâche coopérative (10 min) :</strong> Chaque îlot illustre une partie de la <strong>4e planche de Léo</strong> (Îlot 1 : Léo souriant ; Îlot 2 : camarades qui l'invitent ; Îlot 3 : cour et ballon ; Îlot 4 : bulle <em>« Viens jouer avec nous ! »</em>).
+              </td>
+              <td class="col-ens">
+                • Effectue la dernière rotation des rôles et rappelle les critères esthétiques (colorier sans dépasser, garder le texte lisible).<br>
+                • Répartit les éléments de la 4e planche entre les îlots pour impliquer chaque élève.<br>
+                • Prépare le grand support mural dans le couloir.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 2 : Assemblage du « Mur des Alliés »<br><small>(15 min — Couloir de l'école)</small></td>
+              <td class="col-eleves">
+                • Se déplacent dans le calme devant le grand panneau.<br>
+                • Les <strong>Porte-paroles/Messagers</strong> collent les affiches « Qualités invisibles » au centre, entourées des 4 planches chronologiques de l'histoire de Léo.<br>
+                • Chaque élève colle ensuite son <strong>Bouclier de bienveillance</strong> tout autour pour former une « muraille protectrice ».
+              </td>
+              <td class="col-ens">
+                • Coordonne les déplacements par petits groupes pour éviter l'attroupement.<br>
+                • Guide la mise en page spatiale afin que le sens de lecture (gauche à droite) soit limpide.<br>
+                • Aide à fixer solidement les éléments.
+              </td>
+            </tr>
+            <tr>
+              <td class="col-time">Phase 3 : Inauguration & engagement<br><small>(10 min — Devant le mur)</small></td>
+              <td class="col-eleves">
+                • Relisent collectivement l'ensemble du mur achevé.<br>
+                • Citent les adultes de l'école vers qui se tourner en cas de problème.<br>
+                • Viennent signer leur prénom dans l'encadré <strong>« Nous sommes les Alliés de l'école »</strong> au bas de la fresque.
+              </td>
+              <td class="col-ens">
+                • Félicite la classe pour sa coopération et fait le bilan des apprentissages.<br>
+                • Rappelle officiellement les <strong>personnes ressources</strong> (enseignants, direction, animateurs périscolaires, infirmier/ère scolaire).<br>
+                • <em>(Optionnel : invite la direction ou une classe voisine pour une présentation par les Porte-paroles).</em>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="diff-box">
+          <strong>🧩 Différenciation pédagogique :</strong> Pochoirs géométriques et pastels gras (plus rapides à couvrir que les crayons) mis à disposition des élèves fatigables ou ayant des difficultés de motricité fine ; la signature finale peut être accompagnée d'une empreinte de doigt à l'encre.
+        </div>
+
+        <div class="prod-box">
+          <strong>🏆 Aboutissement du projet — Étape 4/4 :</strong><br>
+          Le <strong>« Mur des Alliés »</strong> est exposé durablement dans un lieu de passage stratégique de l'école (hall d'entrée ou couloir de la cour) pour sensibiliser tous les élèves de l'établissement.
+        </div>
+      </div>
+
+      <div class="session-footer-nav">
+        <button class="nav-step-btn" onclick="switchView('s3', document.querySelectorAll('.nav-btn')[3])">← Séance 3</button>
+        <button class="nav-step-btn" onclick="switchView('wall', document.querySelectorAll('.nav-btn')[5])">Explorer la maquette du Mur des Alliés →</button>
+      </div>
+    </section>
+
+    <!-- ==================== LE MUR DES ALLIÉS ==================== -->
+    <section id="view-wall" class="view-section">
+      <div class="card">
+        <span class="pill pill-teal">Production finale collective • Architecture interactive</span>
+        <h2 style="margin-top: 8px; font-size: 1.5rem;">Le « Mur des Alliés » : Structure et étapes de construction</h2>
+        <p style="margin-bottom: 18px; color: var(--text-muted);">Cliquez sur chacune des <strong>4 zones de la maquette ci-dessous</strong> pour inspecter son contenu exact et la séance durant laquelle elle a été fabriquée par les élèves.</p>
+
+        <div class="wall-mockup">
+          <div class="wall-zone selected" id="zone-top" onclick="selectWallZone('top')">
+            <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">Zone 1 • En haut (Bandeau titre)</div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-top: 4px;">« LE MUR DES ALLIÉS : ENSEMBLE CONTRE LA MISE À L'ÉCART »</div>
+          </div>
+
+          <div class="wall-middle">
+            <div class="wall-zone" id="zone-shields-l" onclick="selectWallZone('shields')" style="display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--warm);">Zone 3 • Autour</div>
+              <div style="font-weight: 800; margin: 6px 0;">🛡️ Boucliers de bienveillance</div>
+              <small style="color: var(--text-muted);">Phrases-solutions des élèves (Séances 3 & 4)</small>
+            </div>
+
+            <div class="wall-zone" id="zone-center" onclick="selectWallZone('center')">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--purple);">Zone 2 • Au centre (Le récit & le sens)</div>
+              <div style="font-weight: 800; margin: 6px 0;">📖 BD « L'histoire de Léo » (4 planches) + ❤️ Affiches « Qualités invisibles »</div>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; font-size: 0.78rem;">
+                <div style="background:#f1f5f9; padding:6px; border-radius:6px;"><strong>Planche 1</strong><br>Léo seul (S1)</div>
+                <div style="background:#f1f5f9; padding:6px; border-radius:6px;"><strong>Planche 2</strong><br>Moqueries (S1)</div>
+                <div style="background:#f1f5f9; padding:6px; border-radius:6px;"><strong>Planche 3/3b</strong><br>Témoins (S1/S3)</div>
+                <div style="background:#dcfce7; padding:6px; border-radius:6px;"><strong>Planche 4</strong><br>Inclusion ! (S4)</div>
+              </div>
+            </div>
+
+            <div class="wall-zone" id="zone-shields-r" onclick="selectWallZone('shields')" style="display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--warm);">Zone 3 • Autour</div>
+              <div style="font-weight: 800; margin: 6px 0;">🛡️ Boucliers de bienveillance</div>
+              <small style="color: var(--text-muted);">Couronne protectrice (Séances 3 & 4)</small>
+            </div>
+          </div>
+
+          <div class="wall-zone" id="zone-bottom" onclick="selectWallZone('bottom')">
+            <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: var(--accent);">Zone 4 • En bas (L'acte citoyen)</div>
+            <div style="font-weight: 800; margin-top: 4px;">✍️ Charte signée « Nous sommes les Alliés de l'école » + 🧑‍🏫 Liste illustrée des adultes référents</div>
+          </div>
+        </div>
+
+        <div id="wall-detail-panel" class="prod-box" style="margin-top: 18px;">
+          <h3 id="detail-title">Zone 1 — En haut : Le titre fédérateur</h3>
+          <p id="detail-desc">Affiché en grandes lettres colorées au sommet du panneau mural dans le couloir ou le hall de l'école : <em>« LE MUR DES ALLIÉS : ENSEMBLE CONTRE LA MISE À L'ÉCART »</em>. Il interpelle immédiatement les passants sur l'objectif citoyen du projet.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🪜 Récapitulatif chronologique de la construction progressive</h2>
+        <div class="grid-4" style="margin-bottom: 0;">
+          <div class="role-card">
+            <span class="pill pill-blue">Étape 1 • Séance 1</span>
+            <h3 style="margin-top: 8px;">Les fondations</h3>
+            <p style="font-size: 0.9rem;">Création des 3 premières planches illustrées, des étiquettes-émotions et des bulles de pensée exprimant la souffrance de Léo face à l'exclusion.</p>
+          </div>
+          <div class="role-card">
+            <span class="pill pill-purple">Étape 2 • Séance 2</span>
+            <h3 style="margin-top: 8px;">Le message central</h3>
+            <p style="font-size: 0.9rem;">Réalisation des panneaux centraux « Ce qui compte vraiment chez un ami » déconstruisant les préjugés liés au poids et à l'apparence.</p>
+          </div>
+          <div class="role-card">
+            <span class="pill pill-warm">Étape 3 • Séance 3</span>
+            <h3 style="margin-top: 8px;">Les outils d'action</h3>
+            <p style="font-size: 0.9rem;">Rédaction des « Boucliers de bienveillance » contenant des phrases concrètes d'action et de soutien pour les témoins.</p>
+          </div>
+          <div class="role-card">
+            <span class="pill pill-teal">Étape 4 • Séance 4</span>
+            <h3 style="margin-top: 8px;">Résolution & engagement</h3>
+            <p style="font-size: 0.9rem;">Mise en couleur des boucliers, illustration de la 4e planche (inclusion de Léo), assemblage dans le couloir et signature collective.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchView(viewId, btn) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById('view-' + viewId).classList.add('active');
+
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setFocusMode(mode, btn) {
+      document.body.classList.remove('mode-eleves', 'mode-ens');
+      if (mode === 'eleves') document.body.classList.add('mode-eleves');
+      if (mode === 'ens') document.body.classList.add('mode-ens');
+
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+        if (b.textContent === btn.textContent) b.classList.add('active');
+      });
+    }
+
+    function telechargerSequence() {
+      const clone = document.querySelector('main').cloneNode(true);
+      clone.querySelectorAll('.filter-bar, .session-footer-nav, .btn-link').forEach(el => el.remove());
+      clone.querySelectorAll('.view-section').forEach(sec => {
+        sec.style.display = 'block';
+        sec.style.marginBottom = '30px';
+      });
+
+      const docHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>Séquence Cycle 2 - Le Mur des Alliés</title>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.5; color: #1e293b; }
+          h1 { color: #1e3a8a; border-bottom: 2px solid #2563eb; padding-bottom: 6px; }
+          h2 { color: #0f172a; margin-top: 22px; background: #eff6ff; padding: 6px 10px; }
+          h3 { color: #1d4ed8; margin-top: 14px; }
+          table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+          th, td { border: 1px solid #94a3b8; padding: 8px; vertical-align: top; text-align: left; }
+          th { background-color: #f1f5f9; font-weight: bold; }
+          .diff-box { background: #fffbeb; border-left: 4px solid #d97706; padding: 10px; margin: 10px 0; }
+          .prod-box { background: #f0fdfa; border-left: 4px solid #0d9488; padding: 10px; margin: 10px 0; }
+        </style>
+        </head>
+        <body>
+          <h1>Séquence Pédagogique Cycle 2 — Le Mur des Alliés</h1>
+          <p><strong>Thème :</strong> Prévention du harcèlement scolaire — La mise à l'écart et les moqueries liées au surpoids.</p>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+
+      try {
+        const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'Sequence-Cycle2-Le-Mur-des-Allies.doc';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 5000);
+      } catch (e) {
+        const a = document.createElement('a');
+        a.href = 'data:application/msword;charset=utf-8,' + encodeURIComponent('\ufeff' + docHtml);
+        a.download = 'Sequence-Cycle2-Le-Mur-des-Allies.doc';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() { document.body.removeChild(a); }, 1000);
+      }
+    }
+
+    const wallDetails = {
+      top: {
+        title: "Zone 1 — En haut : Le titre fédérateur",
+        desc: "Affiché en grandes lettres colorées au sommet du panneau mural dans le couloir ou le hall de l'école : « LE MUR DES ALLIÉS : ENSEMBLE CONTRE LA MISE À L'ÉCART ». Il interpelle immédiatement les passants sur l'objectif citoyen du projet."
+      },
+      center: {
+        title: "Zone 2 — Au centre : Le récit complet et les qualités invisibles (Séances 1, 2, 3 et 4)",
+        desc: "Comprend la bande dessinée complète en 4 planches illustrées de « L'histoire de Léo » (du rejet sur le banc à l'inclusion heureuse au jeu de ballon), encadrée par les affiches coopératives « Ce qui compte vraiment chez un ami » qui déconstruisent les préjugés liés au physique."
+      },
+      shields: {
+        title: "Zone 3 — Tout autour : La couronne des Boucliers de bienveillance (Séances 3 et 4)",
+        desc: "Formée par l'ensemble des boucliers cartonnés rédigés et décorés par chaque élève de la classe. Ils constituent une « muraille protectrice » autour de l'histoire et offrent à tous les élèves de l'école des phrases prêtes à l'emploi pour réagir (« Viens jouer avec nous ! », « Stop aux moqueries ! », « Je préviens un adulte »)."
+      },
+      bottom: {
+        title: "Zone 4 — En bas : L'engagement citoyen et les personnes ressources (Séance 4)",
+        desc: "Présente la charte « Nous sommes les Alliés de l'école » signée par chaque élève de la classe (avec prénom et empreinte), accompagnée de la liste illustrée des adultes référents à qui parler (enseignants, direction, animateurs périscolaires, infirmier/ère scolaire)."
+      }
+    };
+
+    function selectWallZone(zoneKey) {
+      document.querySelectorAll('.wall-zone').forEach(z => z.classList.remove('selected'));
+      if (zoneKey === 'top') document.getElementById('zone-top').classList.add('selected');
+      if (zoneKey === 'center') document.getElementById('zone-center').classList.add('selected');
+      if (zoneKey === 'bottom') document.getElementById('zone-bottom').classList.add('selected');
+      if (zoneKey === 'shields') {
+        document.getElementById('zone-shields-l').classList.add('selected');
+        document.getElementById('zone-shields-r').classList.add('selected');
+      }
+
+      document.getElementById('detail-title').textContent = wallDetails[zoneKey].title;
+      document.getElementById('detail-desc').textContent = wallDetails[zoneKey].desc;
+    }
+  </script>
+</body>
+</html>
